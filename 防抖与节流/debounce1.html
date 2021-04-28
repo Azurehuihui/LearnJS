@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    var timer;
+    function debounce(cb, delay) {
+        if (timer) {
+            clearTimeout(timer);
+        }
+        timer = setTimeout(() => {
+            // 执行回调函数
+            cb();
+        }, delay);
+    }
+
+    function handle() {
+        console.log(Math.round(Math.random() * 10));
+    }
+
+    window.addEventListener('click', () => {
+        console.log("B");
+        debounce(handle, 2000)
+    });
+</script>
+</html>

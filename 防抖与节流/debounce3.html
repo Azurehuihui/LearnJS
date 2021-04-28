@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input id="ct" value="hello"></input>
+    <br/>
+    <span id="showText"></span>
+</body>
+<script>
+/**
+ * 以下是一个防抖函数的应用
+ */
+ function debounce(cb, delay) {
+    var timer;
+    return function() {
+        clearTimeout(timer);
+        let args = arguments;
+        timer = setTimeout(() => {
+            cb.apply(this, args);
+        }, delay);
+    }
+}
+function showInfo(e) {
+    document.getElementById('showText').innerHTML = e.target.value;
+}
+
+document.getElementById('showText').innerHTML = "hello";
+let debounceFn = debounce(showInfo, 1000);
+document.getElementById('ct').addEventListener('input', (e) => {
+    // 在输入的时候显示waitting
+    document.getElementById('showText').innerHTML = "waiting";
+    debounceFn(e);
+})
+</script>
+</html>

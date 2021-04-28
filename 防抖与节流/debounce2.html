@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>   
+</body>
+<script>
+    function handle(e, number) {
+        console.log(e, number);
+    }
+    function debounce(cb, delay) {
+        var timer; // 防抖函数维护自己的计时器
+        // 闭包的返回函数不能是箭头函数，因为箭头函数没有arguments参数
+        return function() {
+            // 清除计时器
+            clearTimeout(timer);
+            let args = arguments;
+            timer = setTimeout(() => {
+                cb.apply(this, args);
+            }, delay);
+        }
+    }
+    // 因为debounce会返回一个匿名函数，如果直接在事件中使用
+    // 那会多次执行这个匿名函数，所以需要提前把返回的方法拿到
+    let debounceFn = debounce(handle, 1000);
+    window.addEventListener('click', (e) => {
+        console.log("V");
+        debounceFn(e, Math.round(Math.random() * 10));
+    })
+</script>
+</html>
