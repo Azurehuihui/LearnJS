@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+</body>
+<script>
+    function throttle1(cb, delay) {
+    let timer;
+    return function() {
+        if (timer) {
+            return;
+        }
+        let args = arguments;
+        timer = setTimeout(() => {
+            cb.apply(this, args);
+            timer = null;
+        }, delay);
+    }
+}
+// 通过时间戳的方式来实现
+function throttle2(cb, delay) {
+    let previous = 0;
+    return function() {
+        let args = arguments;
+        let now = new Date();
+        timer = setTimeout(() => {
+            if (now - previous > delay) {
+                cb.apply(this, args);
+                previous = now;
+            }                    
+        }, delay);
+    }
+}
+function handle(e, number) {
+    console.log(e, number);
+}
+let throttleFn = throttle1(handle, 1000);
+window.addEventListener('click', (e) => {
+    console.log("V");
+    throttleFn(e, Math.round(Math.random() * 10));
+})
+</script>
+</html>
