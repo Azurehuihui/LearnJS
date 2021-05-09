@@ -26,4 +26,40 @@ Person.prototype.info = function () {
 const p1 = new Person('kk', 10);
 console.log(p1);
 const p2 = _new(Person, 'kk', 10);
-console.log(p2);
+console.log(p2);  
+
+
+// 复杂一点的new过程
+
+function new_(constr, ...rests) {
+    if (typeof constr !== "function") {
+        throw "the first param must be a function";
+    }
+    new_.target = constr;
+    var obj = Object.create(constr.prototype);
+    var ret = constr.apply(obj, rests);
+    var isObj = typeof ret !== null && typeof ret === "object";
+    var isFun = typeof ret === "function";
+    //var isObj = typeof ret === "function" || typeof ret === "object" && !!ret;
+    if (isObj || isFun) {
+        return ret;
+    }
+    return obj;
+}
+
+function Person(name, age) {
+    this.name = name;
+    this.age = age;
+}
+Person.prototype.say = function () {
+    console.log(this.name);
+};
+var p1 = new_(Person, 'clloz', '28')
+var p2 = new_(Person, 'csx', '31')
+console.log(p1); //Person {name: "clloz", age: "28"}
+p1.say();  //clloz
+console.log(p2);  //Person {name: "csx", age: "31"}
+p2.say();  //csx
+
+console.log(p1.__proto__ === Person.prototype);  //true
+console.log(p2.__proto__ === Person.prototype);  //true

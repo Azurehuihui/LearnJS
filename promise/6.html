@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="HD1.js"></script>
+</head>
+<body>
+    <script>
+        let p = new promise((resolve, reject) => {
+            resolve("55");
+            // setTimeout(() => {
+            //     resolve("55");
+            //     // reject("拒绝");
+            //     // console.log("ABC")
+            // }, 1000)
+        })
+        p.then(
+            (v) => {console.log(v); },
+            // null,
+            reason => {console.log(reason); return new promise((resolve, reject) => {
+                           reject("快结束了");
+                       })}
+        ).then( (v) => {console.log("中间" + v);},
+        (v) => {console.log("ABC" + v)})
+         .then((v) => console.log(v))
+
+         let p1 = p.then(v => {return p1});
+         p1.then(v => {
+             console.log("是啥呢")
+         })
+        let p2 = promise.reject(new promise((resolve, reject) => {
+            reject("看看直接拒绝")
+        }))
+        console.log(p2)
+        p2.then(v => console.log(v),
+                re => console.log(re))
+        let p3 = new promise((resolve, reject) => {
+            resolve("all1");
+        });
+        let p4 = new promise((resolve, reject) => {
+            resolve("all2");
+        });
+        let promiseAll = promise.all([p3, p4]).then(
+            promises => {
+                console.log(promises);
+            },
+            reason => {
+                console.log(reason);
+            }
+        );
+        let p5 = new promise(resolve => {
+            setInterval(() => {
+                resolve("race1");
+            }, 2000);
+        });
+        let p6 = new promise(resolve => {
+            setInterval(() => {
+                resolve("race2");
+            }, 1000);
+        });
+        let promisesRace = promise.race([p5, p6]).then(
+            promises => {
+                console.log(promises);
+            },
+            reason => {
+                console.log(reason);
+            }
+        );
+        console.log("99")
+        // console.log(p);
+    </script>
+</body>
+</html>
